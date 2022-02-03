@@ -1,0 +1,37 @@
+# this and other docker infra adapted from: https://github.com/karlkeefer/pngr
+version: '3.4'
+services:
+  # back-end api
+  back-prod:
+    restart: always
+    build: 
+      context: back
+      target: prod
+    ports:
+      - "8080:8080"
+    env_file: ./back/.env
+
+  # front-end build
+  front-prod:
+    restart: always
+    build: 
+      context: front
+      target: prod
+    ports:
+      - "3000:3000"
+
+  # nginx is used for ssl termination
+  nginx-prod:
+    restart: always
+    build: 
+      context: nginx
+      target: prod
+    # volumes:
+    #  - ../certs-data:/data/letsencrypt
+    #  - /etc/letsencrypt/:/etc/letsencrypt/
+    ports:
+      - "80:80"
+      - "443:443"
+    depends_on:
+      - back-prod
+      - front-prod

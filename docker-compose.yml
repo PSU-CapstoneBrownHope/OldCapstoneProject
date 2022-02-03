@@ -1,0 +1,34 @@
+# this and other docker infra adapted from: https://github.com/karlkeefer/pngr
+version: '3.4'
+services:
+  # back-end api build
+  back:
+    build: 
+      context: back
+      target: dev
+    volumes:
+      - ./back:/root
+    ports:
+      - "8080:8080"
+    env_file: ./back/.env
+
+  # front-end build
+  front:
+    build: 
+      context: front
+      target: dev
+    volumes:
+      - ./front:/root
+    ports:
+      - "3000:3000"
+
+  # nginx
+  nginx:
+    build: 
+      context: nginx
+      target: dev
+    ports:
+      - "80:80"
+    depends_on:
+      - front
+      - back
