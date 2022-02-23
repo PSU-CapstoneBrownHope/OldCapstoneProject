@@ -112,8 +112,8 @@ export const AccountInfo = () => {
           const formCopy: any = [...form];
           formCopy[1].value = resp.data.firstName;
           formCopy[2].value = resp.data.lastName;
-          formCopy[3].value = resp.data.phoneNumber;
-          formCopy[4].value = resp.data.address;
+          formCopy[3].value = resp.data.address;
+          formCopy[4].value = resp.data.phoneNumber;
           formCopy[5].value = resp.data.emailAddress;
           formCopy[6].value = resp.data.contactMethod;
           formCopy[7].value = resp.data.paymentMethod;

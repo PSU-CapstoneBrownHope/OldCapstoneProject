@@ -1,0 +1,5 @@
+.vscode/
+back/.env
+back/node_modules/
+back/sessions/
+front/node_modules/
