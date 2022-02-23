@@ -1,7 +1,7 @@
 require('dotenv').config();
 //const server = process.env.EXTERNAL_IP;
-//const server == localhost:8080
-const server = '34.82.220.171';
+const server = "localhost:8080"
+//const server = '34.82.220.171';
 export const routes = {
   login: `http://${server}/api/airtable/login/`,
   signup: `http://${server}/api/airtable/signup/`,

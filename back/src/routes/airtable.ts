@@ -521,26 +521,31 @@ airtableRouter.post('/update_password', function(req, res, next) {
       contactMethod: "",
       paymentMethod: "",
     };
-    base("Form Responses")
-      .select({ filterByFormula: `Users = "${userName}"` })
+    base("Users")
+      .select({ filterByFormula: `Username = "${userName}"` })
       .firstPage((err, records) => {
         if (err) console.error(err);
         if (records.length != 1)
           res.status(401).send({ error: "No such user exists" });
-        const recordID = records[0].getId();
-        base("Form Responses").find(recordID, (err, record) => {
+        const recordID = records[0].fields["FR Record ID"];
+        //for(var i in records[0].fields){
+        //  console.log(i)
+        //}
+        //console.log("got record:", JSON.stringify(records.keys));
+        //console.log(records[0].fields["FR Record ID"])
+        base("2021 Form Responses").find(recordID, (err, record) => {
           if (err) {
             console.error(err);
             return;
           }
           if (record) {
             const {
-              Name: fullName,
-              Phone: phoneNum,
-              "Delivery Address": addr,
-              Email: eAddr,
+              "Applicant First and Last Name": fullName,
+              "Applicant Phone": phoneNum,
+              "Applicant Mailing Address": addr,
+              "Applicant Email": eAddr,
               "Preferred Contact Method": contact,
-              "Funding Type": fType,
+              "Funding Preference": fType,
               ...rest
             } = record.fields;
             const first = fullName.split(" ")[0];
