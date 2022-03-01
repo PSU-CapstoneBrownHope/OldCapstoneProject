@@ -9,6 +9,7 @@ import { ApplyForAid } from "./components/ApplyForAid/ApplyForAid";
 import { ApplyForAidGoods } from "./components/ApplyForAidGoods/ApplyForAidGoods";
 import { ApplyForFunds } from "./components/ApplyForFunds/ApplyForFunds";
 import { Landing } from "./components/Landing/Landing";
+import { Redirect } from "./components/Redirect/Redirect";
 import { OfferAid } from "./components/Offer/OfferAid";
 import { ItemDonations } from "./components/Offer/ItemDonations/ItemDonations";
 import { ServiceDonations } from "./components/Offer/ServiceDonations/ServiceDonations";
@@ -62,6 +63,7 @@ function App() {
             <Route exact path="/reset/:token" component={ResetPassword}></Route>
             <Route exact path="/signup/verify/:token" component={SignupVerify}></Route>
             <Route exact path="/landing" component={Landing}></Route>
+            <Route exact path="/redirect/:record" component={Redirect}></Route>
             <Route exact path="/apply-for-aid" component={ApplyForAid}></Route>
             <Route
               exact
