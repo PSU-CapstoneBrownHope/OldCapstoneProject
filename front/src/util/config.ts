@@ -19,5 +19,6 @@ export const routes = {
   verifyUser: `http://${server}/api/reset/forgot`,
   resetPassword: `http://${server}/api/reset/:token`,
   getAllApplications: `http://${server}/api/airtable/allApplications`,
+  addPassphrase: `http://${server}/api/airtable/passphrase`,
 };
 

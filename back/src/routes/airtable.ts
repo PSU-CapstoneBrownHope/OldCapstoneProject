@@ -668,6 +668,23 @@ airtableRouter.get("/allApplications", function (req, res) {
   }
 });
 
+airtableRouter.post("/passphrase", function (req, res) {
+  try {
+    const recordID = req.body.recordID;
+    base("Human Readable Passphrases").create([
+      {
+        "fields": {
+          "FR Record ID": recordID,
+          "Passphrase": "passphrase"
+        }
+      }
+    ])
+  } catch (err) {
+    console.error(err);
+    throw err;
+  }
+});
+
 passport.serializeUser(function(user, callback) {
   callback(null, user);
 });
