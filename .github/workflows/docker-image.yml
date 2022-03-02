@@ -23,8 +23,10 @@ jobs:
       
     #Test
     - uses: actions/checkout@v2
-    - name: Test App in Container 
-    - run: ./front/docker run 
+    - name: Test App in Container
+      with:
+        context: ./front
+        run: docker run
 
     # Run
     #- name: Run App in Container
