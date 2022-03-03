@@ -6,4 +6,4 @@ steps:
   - '-c'
   - |
     set -x && \
-    gcloud compute ssh instance-1 --zone=us-west1-b --command='echo hello world from code build' -y
+    gcloud compute ssh -y instance-1 --zone=us-west1-b --command='echo hello world from code build'
