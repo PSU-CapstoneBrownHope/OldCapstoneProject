@@ -6,5 +6,5 @@ steps:
   - '-c'
   - |
     set -x && \
-    gcloud compute ssh --zone=us-west1-b --project=brown-hope instance-1 --command='cd OldCapstoneProject && \
+    gcloud compute ssh --zone=us-west1-b --project=brown-hope instance-1 --command='cd /home/mack_foggia/OldCapstoneProject && \
                                                                                     sudo docker-compose down'
