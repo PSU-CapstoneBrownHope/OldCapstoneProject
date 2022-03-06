@@ -1,6 +1,6 @@
 const request = require("supertest");
 const app = require("../../server");
-//jest.mock("airtable");
+jest.mock("airtable");
 const airtable = require("airtable");
 
 describe.skip("getInfo Tests", () => {
