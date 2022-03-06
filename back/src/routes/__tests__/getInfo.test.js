@@ -3,9 +3,10 @@ const app = require("../../server");
 jest.mock("airtable");
 const airtable = require("airtable");
 
-describe.skip("getInfo Tests", () => {
+describe("getInfo Tests", () => {
   afterAll(() => {
     app.close();
+    airtable.close(); // Added to stop the tests from hanging - Jeff
   });
   it("Valid user attempting to get info", async () => {
     const res = await request(app).post("/airtable/getInfo").send({
