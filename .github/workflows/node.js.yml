@@ -15,9 +15,18 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
+    
+    # Test
     - uses: actions/checkout@v2
-    - run: |
+    - name: Run Frontend Tests
+      run: |
           cd ./front
+          npm install
+          npm test
+          
+    - name: Run Backend Tests
+      run: |
+          cd ./back
           npm install
           npm test
 
