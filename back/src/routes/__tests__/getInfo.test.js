@@ -6,16 +6,16 @@ const airtable = require("airtable");
 describe("getInfo Tests", () => {
   afterAll(() => {
     app.close();
-    airtable.close(); // Added to stop the tests from hanging - Jeff
+    //airtable.close(); // Added to stop the tests from hanging - Jeff
   });
-  it.skip("Valid user attempting to get info", async () => {
+  it("Valid user attempting to get info", async () => {
     const res = await request(app).post("/airtable/getInfo").send({
       userName: "testUser",
     });
     expect(res.statusCode).toEqual(200);
   });
 
-  it.skip("Invalid user attempting to get info", async () => {
+  it("Invalid user attempting to get info", async () => {
     airtable.prototype.firstPage = (callback) => {
       callback(null, []);
     };
