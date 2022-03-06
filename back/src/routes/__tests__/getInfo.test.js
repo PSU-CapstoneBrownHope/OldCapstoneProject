@@ -26,4 +26,4 @@ describe("getInfo Tests", () => {
   });
 });
 
-app.close();
+app.close(); // Needed if skipping tests
