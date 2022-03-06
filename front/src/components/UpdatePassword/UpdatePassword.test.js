@@ -50,7 +50,7 @@ test("loads and sees the verify new password text", async () => {
 });
 
 describe("form field input", () => {
-  test("enter username, old password, new password, verify password, and update button", async () => {
+  test.skip("enter username, old password, new password, verify password, and update button", async () => {
     render(
       <Router>
         <UpdatePassword></UpdatePassword>
