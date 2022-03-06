@@ -3,7 +3,7 @@ const app = require("../../server");
 jest.mock("airtable");
 const airtable = require("airtable");
 
-describe("getInfo Tests", () => {
+describe.skip("getInfo Tests", () => {
   afterAll(() => {
     app.close();
     airtable.close(); // Added to stop the tests from hanging - Jeff
