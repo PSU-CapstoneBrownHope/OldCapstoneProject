@@ -521,44 +521,39 @@ airtableRouter.post('/update_password', function(req, res, next) {
       contactMethod: "",
       paymentMethod: "",
     };
-    base("Form Responses")
-      .select({ filterByFormula: `Users = "${userName}"` })
+    base("Users")
+      .select({ filterByFormula: `Username = "${userName}"` })
       .firstPage((err, records) => {
         if (err) console.error(err);
         if (records.length != 1)
           res.status(401).send({ error: "No such user exists" });
-        const recordID = records[0].getId();
-        base("Form Responses").find(recordID, (err, record) => {
-          if (err) {
-            console.error(err);
-            return;
-          }
-          if (record) {
-            const {
-              Name: fullName,
-              Phone: phoneNum,
-              "Delivery Address": addr,
-              Email: eAddr,
-              "Preferred Contact Method": contact,
-              "Funding Type": fType,
-              ...rest
-            } = record.fields;
-            const first = fullName.split(" ")[0];
-            const last = fullName.split(" ")[1];
-            fields.firstName = first;
-            fields.lastName = last;
-            fields.phoneNumber = phoneNum;
-            fields.address = addr;
-            fields.emailAddress = eAddr;
-            fields.contactMethod = contact;
-            fields.paymentMethod = fType;
-            res.write(JSON.stringify(fields));
-          } else {
-            res.write(JSON.stringify(null));
-          }
-          res.end();
+        const recordID = records[0].fields["FR Record ID"];
+    
+        base("2021 Form Responses")
+          .select({ filterByFormula: `{BRF 2021 Application Record ID} = "${recordID}"` })
+          .firstPage((err, records1) => {
+            if (err) console.error(err);
+            if (records1.length != 1)
+              res.status(401).send({ error: "Multiple records match that ID" });
+            
+            //recordID = records[0].fields["FR Record ID"];
+            if(records[0]){
+              var fullName = records1[0].fields["Applicant First and Last Name"]
+              fields.firstName = fullName.split(" ")[0]
+              fields.lastName = fullName.split(" ")[1]
+              fields.phoneNumber = records1[0].fields["Applicant Phone"];
+              fields.address = records1[0].fields["Applicant Mailing Address"];
+              fields.emailAddress = records1[0].fields["Applicant Email"];
+              fields.contactMethod = records1[0].fields["Preferred Contact Method"];
+              fields.paymentMethod = records1[0].fields["Funding Preference"];
+              res.write(JSON.stringify(fields));
+            }
+            else {
+              res.write(JSON.stringify(null));
+            }
+            res.end();
         });
-      });
+    });
   } catch (err) {
     console.error(err);
     throw err;
@@ -589,12 +584,12 @@ airtableRouter.post('/update_password', function(req, res, next) {
 airtableRouter.post("/update", function (req, res) {
   try {
     const fields = {
-      Name: "",
-      Phone: "",
-      "Delivery Address": "",
-      Email: "",
+      "Applicant First and Last Name": "",
+      "Applicant Phone": "",
+      "Applicant Mailing Address": "",
+      "Applicant Email": "",
       "Preferred Contact Method": "",
-      "Funding Type": "",
+      "Funding Preference": "",
     };
     const {
       userName,
@@ -609,35 +604,35 @@ airtableRouter.post("/update", function (req, res) {
     for (const field in fieldsToChange) {
       switch (field) {
         case "address":
-          fields["Delivery Address"] = fieldsToChange[field];
+          fields["Applicant Mailing Address"] = fieldsToChange[field];
           break;
         case "Name":
-          fields.Name = fieldsToChange[field];
+          fields["Applicant First and Last Name"] = fieldsToChange[field];
           break;
         case "phoneNumber":
-          fields.Phone = fieldsToChange[field];
+          fields["Applicant Phone"] = fieldsToChange[field];
           break;
         case "emailAddress":
-          fields.Email = fieldsToChange[field];
+          fields["Applicant Email"] = fieldsToChange[field];
           break;
         case "contactMethod":
           fields["Preferred Contact Method"] = fieldsToChange[field];
           break;
         case "paymentMethod":
-          fields["Funding Type"] = fieldsToChange[field];
+          fields["Funding Preference"] = fieldsToChange[field];
           break;
       }
     }
 
-    base("Form Responses")
-      .select({ filterByFormula: `Users = "${userName}"` })
+    base("Users")
+      .select({ filterByFormula: `Username = "${userName}"` })
       .firstPage((err, records) => {
         if (err) console.error(err);
         if (records.length != 1)
           return res.status(403).send({ error: "Unauthorized user" });
 
-        const recordID = records[0].getId();
-        base("Form Responses")
+        const recordID = records[0].fields["FR Record ID"];
+        base("2021 Form Responses")
           .update(recordID, fields, (err, record) => {
             if (err) {
               return res.status(422).send({ error: "Invalid syntax" });
