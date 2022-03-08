@@ -30,8 +30,3 @@ jobs:
           cd ./back
           npm install
           npm test
-           
-    # Deploy
-    - name: Deploy to GCP
-      run: echo "... not implemented yet."
-
