@@ -1,0 +1,32 @@
+# This work flow is used to gate PR and pushes to the legacy and development
+# branches on successful running of both the front and backend tests. If
+# successful it then deploys to GCP
+
+name: Test and Deploy 
+
+on:
+  push:
+    branches: [ main ]
+  pull_request:
+    branches: [ main ]
+
+jobs:
+  build:
+
+    runs-on: ubuntu-latest
+
+    steps:
+    
+    # Test
+    - uses: actions/checkout@v2
+    - name: Run Frontend Tests
+      run: |
+          cd ./front
+          npm install
+          npm test
+          
+    - name: Run Backend Tests
+      run: |
+          cd ./back
+          npm install
+          npm test
