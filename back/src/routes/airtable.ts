@@ -83,7 +83,7 @@ airtableRouter.post('/signup/verify/:token' , function(req, res, next) {
     // in the Users table. Retrieve their password if it
     // exists.
     function(done) {
-      base('Users').find(user_record_id, function(err, record) {
+      base('Authentication').find(user_record_id, function(err, record) {
         if (err) {
           console.error(err);
         }
@@ -216,7 +216,7 @@ airtableRouter.post('/signup', function(req, res, next) {
     // make sure the user does not already exist
     function(hashed_pw, done) {
       console.log(hashed_pw);
-      base('Users').select({filterByFormula: `Username = "${username}"`}).firstPage((err, records) => {
+      base('Authentication').select({filterByFormula: `Username = "${username}"`}).firstPage((err, records) => {
         if (err) {
           console.error(err);
         }
@@ -236,7 +236,7 @@ airtableRouter.post('/signup', function(req, res, next) {
         done(null, false, null);
       }
       else{
-        base('Users').create([
+        base('Authentication').create([
           {
             "fields": {
               "Username": username,
@@ -439,7 +439,7 @@ airtableRouter.post('/update_password', function(req, res, next) {
   const new_password_verify = req.body.new_password_verify;
   
   // get user
-  base('Users').select({filterByFormula: `Username = "${username}"`}).firstPage((err, records) => {
+  base('Authentication').select({filterByFormula: `Username = "${username}"`}).firstPage((err, records) => {
     if (err) {
       console.error(err)
     };
@@ -466,7 +466,7 @@ airtableRouter.post('/update_password', function(req, res, next) {
             }
             else if (res_verify) {
               // both new passwords match, new password hashed, update user password
-              base('Users').update([{'id': record_id, 'fields': {'Password': hash},}], function(err, update_record) {
+              base('Authentication').update([{'id': record_id, 'fields': {'Password': hash},}], function(err, update_record) {
                 if (err) {
                   console.error(err)
                 };
@@ -521,7 +521,7 @@ airtableRouter.post('/update_password', function(req, res, next) {
       contactMethod: "",
       paymentMethod: "",
     };
-    base("Users")
+    base("Authentication")
       .select({ filterByFormula: `Username = "${userName}"` })
       .firstPage((err, records) => {
         if (err) console.error(err);
@@ -624,7 +624,7 @@ airtableRouter.post("/update", function (req, res) {
       }
     }
 
-    base("Users")
+    base("Authentication")
       .select({ filterByFormula: `Username = "${userName}"` })
       .firstPage((err, records) => {
         if (err) console.error(err);
@@ -680,7 +680,7 @@ passport.use(
   new localStrategy(
     { usernameField: "username", passwordField: "password" },
     function (username, password, done) {
-      base("Users")
+      base("Authentication")
         .select({ filterByFormula: `Username = "${username}"` })
         .firstPage((err, records) => {
           if (err) {
